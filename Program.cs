@@ -1,7 +1,4 @@
 ﻿using System;
-using Reddit;
-using Reddit.Controllers;
-using System.Collections.Generic;
 
 namespace NetScratcher
 {
@@ -12,9 +9,22 @@ namespace NetScratcher
             DotNetEnv.Env.Load();
             var appID           = Environment.GetEnvironmentVariable("REDDIT_APP_ID");
             var refreshToken    = Environment.GetEnvironmentVariable("MY_REFRESH_TOKEN");
-
             Search search = new Search();
-            search.SearchReddit(appID,refreshToken);
+
+            while (true)
+            {
+                Console.WriteLine("What would you like to do? Find images or quit? f/q");
+                string input = Console.ReadLine();
+
+                if(input == "f"){
+                    search.SearchReddit(appID,refreshToken);
+                } else if(input == "q"){
+                    break;
+                } else{
+                    Console.WriteLine("Invalid Response!");
+                    continue;
+                }
+            }
         }
     }
 }

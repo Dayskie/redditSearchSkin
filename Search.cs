@@ -13,31 +13,53 @@ class Search
         var reddit = new RedditClient(appID,refreshToken);
 
         string output = Directory.GetCurrentDirectory() + @"\output\";
+        int imageCount = 0;
 
         Console.WriteLine("Enter a subbreddit");
         string subReddit = Console.ReadLine();
         Console.WriteLine("Enter a search term");
         string searchTerm = Console.ReadLine();
-
-        //int maxPosts = int.Parse(Console.ReadLine());
-
-        List<Post> posts = reddit.Subreddit(subReddit).Search(new Reddit.Inputs.Search.SearchGetSearchInput(searchTerm, limit: 1));
-
-        WebClient webClient = new WebClient();
         
+        Console.WriteLine("How many posts would you like to see? (max 100)");
+        int maxPosts = int.Parse(Console.ReadLine());
 
-        Console.WriteLine($"over {posts.Count} results for {searchTerm} in r/{subReddit} found!");
-        foreach (var x in posts){
-            string link = webClient.DownloadString("https://www.reddit.com" + x.Permalink + ".json");
+        try
+        {
+            List<Post> posts = reddit.Subreddit(subReddit).Search(new Reddit.Inputs.Search.SearchGetSearchInput(searchTerm,t:"all",type:"link", limit: maxPosts));
+            
+            WebClient webClient = new WebClient();
+            System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
+        
+            Console.WriteLine($"over {posts.Count} results for {searchTerm} in r/{subReddit} found!");
+            timer.Start();
 
-            dynamic dObj = JsonConvert.DeserializeObject<dynamic>(link);
+            foreach (var x in posts){
+                string link = webClient.DownloadString("https://www.reddit.com" + x.Permalink + ".json");
+                dynamic dObj = JsonConvert.DeserializeObject<dynamic>(link);
+                //if((bool)dObj[0]["data"]["children"][0]["data"]["is_self"] == false){
 
-            string image = (string)dObj[0]["data"]["children"][0]["data"]["url"];
-            Console.WriteLine(image);
-            //Console.WriteLine("https://www.reddit.com" + x.Permalink + ".json");
+                string image = (string)dObj[0]["data"]["children"][0]["data"]["url"];
+                if(Path.GetExtension(image) == ".png" || Path.GetExtension(image) == ".jpg")
+                {
+                    webClient.DownloadFile(image,output + $"{searchTerm}{imageCount}" + Path.GetExtension(image));
+                }
 
+                imageCount++;
+                    
+                Console.WriteLine(image);
+                //}
+            }
+
+            timer.Stop();
+            TimeSpan timeTaken = timer.Elapsed;
+
+            Console.WriteLine($"Finished in {timeTaken} with {imageCount} images collected!");
+            imageCount = 0;
+            timer.Reset();
         }
-
-        Console.ReadLine();
+        catch
+        {
+            Console.WriteLine("UNKOWN ERROR (possible 404)");
+        }
     }
 }
