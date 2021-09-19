@@ -1,1 +1,1 @@
-todo: combine with folder system to store pictures here
+combine with folder program

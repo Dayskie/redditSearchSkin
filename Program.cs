@@ -11,20 +11,22 @@ namespace NetScratcher
             var refreshToken    = Environment.GetEnvironmentVariable("MY_REFRESH_TOKEN");
             Search search = new Search();
 
-            while (true)
-            {
-                Console.WriteLine("What would you like to do? Find images or quit? f/q");
-                string input = Console.ReadLine();
+            string sub ="";
+            string key ="";
+            string sort ="";
+            int postLimit = 0;
 
-                if(input == "f"){
-                    search.SearchReddit(appID,refreshToken);
-                } else if(input == "q"){
-                    break;
-                } else{
-                    Console.WriteLine("Invalid Response!");
-                    continue;
-                }
+            try{
+                sub = args[0];
+                key = args[1];
+                sort = args[2]; //relevence hot top new comments
+                postLimit = int.Parse(args[3]);
+                    
             }
+            catch{
+                Console.WriteLine("ERROR incorrect value (string) sub (string) keyword (int) maxPosts");
+            }
+            search.SearchReddit(appID,refreshToken,sub,key,sort,postLimit);
         }
     }
 }
