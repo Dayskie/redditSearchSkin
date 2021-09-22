@@ -1,6 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
-using System.IO;
 
 namespace NetScratcher
 {
@@ -8,16 +6,12 @@ namespace NetScratcher
     {
         static void Main(string[] args)
         {   
-            //create a secret.json and store your json values like so
-            // "REDDIT_APP_ID" : "appid",
-            // "MY_REFRESH_TOKEN" : "refreshtoken"
-            string secret = ("secret.json");
-            JObject SObj = JObject.Parse(File.ReadAllText(secret));
-            string appID = (string)SObj["REDDIT_APP_ID"];
-            string refreshToken = (string)SObj["MY_REFRESH_TOKEN"];
+            string appID = ""; //Left blank for git
+            string refreshToken = ""; //Left blank for git
 
             Search search = new Search();
 
+            //todo fix this shit i want to add flags like -f subreddit -s top =c 10
             string sub ="";
             string key ="";
             string sort ="";
