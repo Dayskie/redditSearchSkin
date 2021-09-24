@@ -8,8 +8,10 @@ using Newtonsoft.Json;
 
 class Search
 {
-    public void SearchReddit(string appID, string refreshToken, string sub, string search,string time, int maxPosts)
+    public void SearchReddit(string sub, string search,string time, int maxPosts)
     {
+        string appID                        = ""; //left blank for git
+        string refreshToken                 = ""; //left blank for git
         var reddit                          = new RedditClient(appID,refreshToken);
         Folders folders                     = new Folders();
         WebClient webClient                 = new WebClient();
