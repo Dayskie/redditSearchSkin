@@ -16,18 +16,23 @@ class Search
         System.Diagnostics.Stopwatch timer  = new System.Diagnostics.Stopwatch();
 
         List<Post> posts = reddit.Subreddit(sub).Search(new Reddit.Inputs.Search.SearchGetSearchInput
-        (search,sort:time,type:"link", limit: maxPosts));
+                                                (search,sort:time,type:"link", limit: maxPosts));
+
         int imageCount = 0;
         Console.WriteLine($"over {posts.Count} results for {search} in r/{sub} found!");
         timer.Start();
+
         foreach (var x in posts){
             Console.WriteLine("Downloading");
             string link = webClient.DownloadString("https://www.reddit.com" + x.Permalink + ".json");
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Image downloaded");
             Console.ResetColor();
+
             dynamic dObj = JsonConvert.DeserializeObject<dynamic>(link);
             string image = (string)dObj[0]["data"]["children"][0]["data"]["url"];
+
             if(Path.GetExtension(image) == ".png" || Path.GetExtension(image) == ".jpg" || Path.GetExtension(image) == ".gif")
             {       
                 webClient.DownloadFile(image, folders.CreateFolder(search,image));
@@ -42,9 +47,11 @@ class Search
         }
         timer.Stop();
         TimeSpan timeTaken = timer.Elapsed;
+
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"Finished in {timeTaken} with {imageCount} images collected!");
         Console.ResetColor();
+        
         imageCount = 0;
         timer.Reset();
     }

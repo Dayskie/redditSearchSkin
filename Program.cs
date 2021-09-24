@@ -1,33 +1,53 @@
 ﻿using System;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 
 namespace NetScratcher
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {   
+            var rootCommand = new RootCommand
+            {
+                new Option<string>(new[] {"--find","-f"},
+                description: "search a specfic subreddit"),
+
+                new Option<string>(new[] {"--term","t"},
+                description: "the specific search term (ex, truck, ball"),
+                
+                new Option  <string>(new[]{"--sort", "s"},
+                getDefaultValue:()=>"top",
+                description: "Sort posts by relevence hot top new or comments"),
+                
+                new Option  <int>(new[] {"--max","-m"},
+                getDefaultValue:()=>20,
+                description: "Set the max number of posts to download"),
+
+            };
+
+            rootCommand.Description = "Reddit search command line tool.";
+
+            rootCommand.Handler = CommandHandler.Create<string,string,string,int>(SearchSub);
+            return rootCommand.InvokeAsync(args).Result;
+        }
+
+        private static void SearchSub(string find, string term,string sort, int max){
             string appID = ""; //Left blank for git
             string refreshToken = ""; //Left blank for git
 
+            if(find == null){
+                Console.WriteLine("arg 'find' required!");
+                return;
+            }
+
+            if(find == null){
+                Console.WriteLine("arg 'find' required!");
+                return;
+            }
+
             Search search = new Search();
-
-            //todo fix this shit i want to add flags like -f subreddit -s top =c 10
-            string sub ="";
-            string key ="";
-            string sort ="";
-            int postLimit = 0;
-
-            try{
-                sub         = args[0];
-                key         = args[1];
-                sort        = args[2]; //relevence hot top new comments
-                postLimit   = int.Parse(args[3]);
-                    
-            }
-            catch{
-                Console.WriteLine("ERROR incorrect value (string) sub (string) keyword (int) maxPosts");
-            }
-            search.SearchReddit(appID,refreshToken,sub,key,sort,postLimit);
+            search.SearchReddit(appID,refreshToken,find,term,sort,max);
         }
     }
 }
