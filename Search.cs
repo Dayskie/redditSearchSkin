@@ -21,7 +21,7 @@ class Search
                                                 (search,sort:time,type:"link", limit: maxPosts));
 
         int imageCount = 0;
-        Console.WriteLine($"over {posts.Count} results for {search} in r/{sub} found!");
+        Console.WriteLine($"{posts.Count} results for {search} in r/{sub} found!");
         timer.Start();
 
         foreach (var x in posts){

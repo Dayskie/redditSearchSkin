@@ -6,7 +6,7 @@ public class Folders
 {
     public string CreateFolder(string search, string image){
         //extracting export info from settings.json
-        string settings = "settings.json";
+        string settings = AppDomain.CurrentDomain.BaseDirectory + "/settings.json";
         dynamic SObjs = JObject.Parse(File.ReadAllText(settings));
         bool customOutput = (bool)SObjs["custom-path"];
         string path;
@@ -32,7 +32,7 @@ public class Folders
     }
 
     public void CustomPath(string path){
-        string settings = "settings.json";
+        string settings = AppDomain.CurrentDomain.BaseDirectory + "/settings.json";
         dynamic jObj = JObject.Parse(File.ReadAllText(settings));
 
         if(path == "default"){

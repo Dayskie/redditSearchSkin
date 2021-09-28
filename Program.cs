@@ -8,7 +8,7 @@ namespace NetScratcher
     {
         static int Main(string[] args)
         {   
-            //sorry for the ugly main file
+            //sorry for the ugly main file  
             Folders folders = new Folders();
 
             var command = new RootCommand();
@@ -51,7 +51,6 @@ namespace NetScratcher
             };
             outputCommand.Description = "Set export location of files, type 'default' to reset location";
             outputCommand.Handler = CommandHandler.Create<string>(folders.CustomPath);
-
             command.Add(outputCommand);
 
             return command.Invoke(args);
