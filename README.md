@@ -10,7 +10,7 @@ To install netrsratcher, download the release zip, unzip it and place the folder
 
 To search for images use the basic command below 
 ```terminal
-netscratcher search -f subreddit -t searchTerm -s 
+netscratcher search -f subreddit -t searchTerm 
 ```
 To set a custom output folder use the basic command below
 ```terminal
