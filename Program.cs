@@ -12,8 +12,8 @@ namespace NetScratcher
             Folders folders = new Folders();
 
             var command = new RootCommand();
-            command.Name = "redsearch";
-            command.Description ="hi observer";
+            command.Name = "netscratcher";
+            command.Description ="Search reddit for images";
 
             var searchCommand = new Command("search"){
                 new Option<string>(new[] {"--find","-f"},

@@ -14,7 +14,7 @@ public class Folders
         if(customOutput){
             path = (string)SObjs["export-location"];;
         } else{
-            path = System.Environment.CurrentDirectory + "/output/";
+            path = AppDomain.CurrentDomain.BaseDirectory + "output/";
         }
 
         string filterFolder =  path + $"/{search}/";
